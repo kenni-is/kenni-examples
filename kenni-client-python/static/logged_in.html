@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Kenni OIDC Request</title>
+  </head>
+  <body>
+    <h1>Welcome ===NAME===</h1>
+    <button id="logoutBtn">Logout</button>
+    <button id="getProtectedResourceBtn">Get protected resource</button>
+    <div><pre id="protectedResourceElem"></pre></div>
+    <script>
+      const logoutBtn = document.getElementById("logoutBtn");
+      const getProtectedResourceBtn = document.getElementById(
+        "getProtectedResourceBtn"
+      );
+      const protectedResourceElem = document.getElementById(
+        "protectedResourceElem"
+      );
+
+      logoutBtn.addEventListener("click", () => {
+        window.location.href = "/logout";
+      });
+      getProtectedResourceBtn.addEventListener("click", async () => {
+        const response = await fetch("/get_protected_resource");
+        const data = await response.json();
+        protectedResourceElem.innerHTML = data;
+      });
+    </script>
+  </body>
+</html>
