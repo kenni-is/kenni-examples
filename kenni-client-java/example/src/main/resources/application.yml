@@ -1,0 +1,21 @@
+server:
+  port: 4005
+
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          kenni-client:
+            client-id: "some-client-id"
+            client-secret: some-client-secret
+            client-authentication-method: "client_secret_basic"
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            scope: openid, national_id
+            provider: kenni
+            require-proof-key: true
+            require-authorization-consent: false
+        provider:
+          kenni:
+            issuer-uri: https://idp.kenni.is/some-issuer
