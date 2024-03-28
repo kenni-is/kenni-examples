@@ -1,34 +1,99 @@
-import { Button, Text, View } from "react-native";
-import * as AuthSession from "expo-auth-session";
+import { useState } from "react";
+import { Button, SafeAreaView, Text } from "react-native";
+import {
+  exchangeCodeAsync,
+  makeRedirectUri,
+  useAuthRequest,
+  useAutoDiscovery,
+} from "expo-auth-session";
 import * as WebBrowser from "expo-web-browser";
+import * as SecureStore from "expo-secure-store";
+import { Buffer } from "buffer";
 
-const teamDomain = "some-domain";
-const issuer = `https://idp.kenni.is/${teamDomain}`;
-const clientId = "some-client-id";
+const issuer = process.env.EXPO_PUBLIC_ISSUER as string;
+const clientId = process.env.EXPO_PUBLIC_CLIENT_ID as string;
 
 WebBrowser.maybeCompleteAuthSession();
-const redirectUri = AuthSession.makeRedirectUri();
 
 export default function App() {
-  const discovery = AuthSession.useAutoDiscovery(issuer);
-  // Create and load an auth request
-  const [request, result, promptAsync] = AuthSession.useAuthRequest(
+  const discovery = useAutoDiscovery(issuer);
+  const redirectUri = makeRedirectUri({
+    scheme: undefined,
+    path: "callback",
+  });
+
+  // We store the JWT in here
+  const [error, setError] = useState<string | null>(null);
+  const [isAuthenticating, setIsAuthenticating] = useState(false);
+  const [user, setUser] = useState<string | null>(SecureStore.getItem("user"));
+
+  // Request
+  const [request, , promptAsync] = useAuthRequest(
     {
       clientId,
-      redirectUri,
       scopes: ["openid", "profile"],
+      redirectUri,
     },
     discovery
   );
 
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Button
-        title="Login!"
-        disabled={!request}
-        onPress={() => promptAsync()}
-      />
-      {result && <Text>{JSON.stringify(result, null, 2)}</Text>}
-    </View>
+    <SafeAreaView
+      style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+    >
+      {user ? (
+        <Button
+          title="Log out"
+          onPress={() => {
+            SecureStore.deleteItemAsync("user");
+            setUser(null);
+          }}
+        />
+      ) : (
+        <Button
+          disabled={isAuthenticating}
+          title="Login"
+          onPress={async () => {
+            setIsAuthenticating(true);
+            const codeResponse = await promptAsync();
+            if (!request || codeResponse?.type !== "success" || !discovery) {
+              setIsAuthenticating(false);
+              setError("Something went wrong during authorization...");
+              return;
+            }
+
+            const res = await exchangeCodeAsync(
+              {
+                clientId,
+                code: codeResponse.params.code,
+                extraParams: request.codeVerifier
+                  ? { code_verifier: request.codeVerifier }
+                  : undefined,
+                redirectUri,
+              },
+              discovery
+            );
+
+            const idToken = res?.idToken;
+            if (!idToken) {
+              setIsAuthenticating(false);
+              setError("Something went wrong during code exchange...");
+              return;
+            }
+
+            const payload = idToken.split(".")[1];
+            const userString = Buffer.from(payload, "base64").toString("ascii");
+
+            const userFromToken = userString;
+            await SecureStore.setItemAsync("user", userFromToken);
+
+            setUser(userFromToken);
+            setIsAuthenticating(false);
+          }}
+        />
+      )}
+      {error && <Text>{error}</Text>}
+      {user && <Text>{user}</Text>}
+    </SafeAreaView>
   );
 }
