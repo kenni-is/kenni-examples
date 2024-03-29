@@ -5,10 +5,9 @@ import * as jose from "jose";
 import { cookies } from "@kenni-example/utils/cookies";
 
 const issuer = process.env.KENNI_ISSUER;
-const jwksUri = process.env.KENNI_ISSUER_JWKS_URI;
 const clientId = process.env.KENNI_CLIENT_ID;
 
-const jwks = jose.createRemoteJWKSet(new URL(jwksUri as string));
+const jwks = jose.createRemoteJWKSet(new URL(`${issuer}/oidc/jwks`));
 
 export async function GET(req: NextRequest) {
   const { accessToken } =
