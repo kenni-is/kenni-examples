@@ -1,6 +1,5 @@
 import styles from "./page.module.css";
-import { SignInButton } from "@kenni-example/components";
-import { LoggedInContainer } from "@kenni-example/components/ui";
+import { PageContainer } from "@kenni-example/components/ui";
 
 import { getSession } from "./session";
 
@@ -9,14 +8,12 @@ const Home = async () => {
 
   return (
     <main className={styles.main}>
-      {session?.user ? (
+      {session?.user && (
         <>
           <h1>Welcome {session.user.name}</h1>
-          <LoggedInContainer />
         </>
-      ) : (
-        <SignInButton />
       )}
+      <PageContainer signedIn={Boolean(session?.user)} />
     </main>
   );
 };

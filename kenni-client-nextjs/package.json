@@ -12,6 +12,7 @@
     "jose": "^5.2.3",
     "next": "14.1.4",
     "next-auth": "^4.24.7",
+    "openid-client": "^5.6.5",
     "react": "^18",
     "react-dom": "^18"
   },

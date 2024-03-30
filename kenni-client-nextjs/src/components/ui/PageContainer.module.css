@@ -5,5 +5,10 @@
 
 .response {
   margin-top: 20px;
-  max-width: 300px;
+  max-width: 500px;
+}
+
+.details { 
+  white-space: pre-wrap;
+  word-wrap: break-word;
 }
