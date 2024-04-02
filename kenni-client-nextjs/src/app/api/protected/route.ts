@@ -6,6 +6,7 @@ import { cookies } from "@kenni-example/utils/cookies";
 
 const issuer = process.env.KENNI_ISSUER;
 const clientId = process.env.KENNI_CLIENT_ID;
+const apiScope = process.env.KENNI_API_SCOPE;
 
 const jwks = jose.createRemoteJWKSet(new URL(`${issuer}/oidc/jwks`));
 
@@ -24,6 +25,10 @@ export async function GET(req: NextRequest) {
       audience: `${clientId}-api`,
     });
     payload = res.payload;
+
+    if (apiScope && !(payload?.scope as string).split(" ").includes(apiScope)) {
+      throw new Error("required scope not present");
+    }
   } catch (error) {
     return Response.json({ data: error }, { status: 403 });
   }

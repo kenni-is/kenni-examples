@@ -54,6 +54,7 @@ export default function App() {
           disabled={isAuthenticating}
           title="Login"
           onPress={async () => {
+            setError(null);
             setIsAuthenticating(true);
             const codeResponse = await promptAsync();
             if (!request || codeResponse?.type !== "success" || !discovery) {

@@ -8,6 +8,7 @@ const scope = process.env.KENNI_SCOPE;
 const redirectUri = process.env.KENNI_REDIRECT_URI;
 const clientId = process.env.KENNI_CLIENT_ID;
 const clientSecret = process.env.KENNI_CLIENT_SECRET;
+const apiScope = process.env.KENNI_API_SCOPE;
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -18,7 +19,7 @@ export const authOptions: NextAuthOptions = {
       wellKnown: `${issuer}/.well-known/openid-configuration`,
       authorization: {
         params: {
-          scope,
+          scope: `${scope} ${apiScope}`,
           redirect_uri: redirectUri,
           ui_locale: "is", // Optional. Valid options, "is" or "en"
         },
