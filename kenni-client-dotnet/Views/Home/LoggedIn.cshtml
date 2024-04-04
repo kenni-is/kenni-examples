@@ -1,0 +1,9 @@
+﻿<h1>Welcome @ViewData["Name"]</h1>
+<button id="logoutBtn">Logout</button>
+<script>
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    logoutBtn.addEventListener("click", () => {
+        window.location.href = "/Home/Logout";
+    });
+</script>
