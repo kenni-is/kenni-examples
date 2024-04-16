@@ -5,4 +5,5 @@
 - dotnet user-secrets set "Kenni:Authority" "https://idp.kenni.is/your-team"
 - dotnet user-secrets set "Kenni:ClientId" "your-client-id"
 - dotnet user-secrets set "Kenni:ClientSecret" "your-client-secret"
+- dotnet user-secrets set "Kenni:ApiScope" "your-api-scope"
 - dotnet run
