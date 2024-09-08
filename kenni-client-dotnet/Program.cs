@@ -44,7 +44,7 @@ builder.Services
       ValidAudience = $"{builder.Configuration["Kenni:ClientId"]}-api",
       ValidateIssuer = true,
       ValidateAudience = true,
-      ValidateLifetime = false,
+      ValidateLifetime = true,
       ValidateIssuerSigningKey = true,
     };
   });
