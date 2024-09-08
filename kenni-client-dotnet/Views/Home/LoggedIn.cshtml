@@ -1,10 +1,71 @@
-﻿<h1>Welcome @ViewData["Name"]</h1>
-<button id="logoutBtn">Logout</button>
-<p>@ViewData["AccessToken"]</p>
+﻿<style>
+    .main {
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .actions {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+    }
+
+    .field {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+</style>
+
+<div class="main">
+  <h1>Welcome @ViewData["Name"]</h1>
+
+  <div class="actions">
+    <button id="logoutBtn">Logout</button>
+    <button id="callApiBtn">Test access token</button>
+  </div>
+
+  <div class="field">
+    <label for="accessToken">Access Token</label>
+    <textArea id="accessToken" style="height: 350px; width: 400px;">@ViewData["AccessToken"]</textArea>
+  </div>
+
+  <div id="responseContainer"></div>
+</div>
 <script>
+  const callApi = async () => {
+    const accessToken = document.getElementById("accessToken").value;
+    const response = await fetch("/api/authed", {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    let data;
+
+    if (response.status === 401) {
+      data = response.headers.get('www-authenticate');
+    } else {
+      try {
+        data = await response.text();
+      } catch (error) {
+        data = error.message ?? 'An error occurred';
+      }
+    }
+
+    document.getElementById('responseContainer').innerText = `Response from API: \n ${data}`;
+  };
+
   const logoutBtn = document.getElementById("logoutBtn");
 
   logoutBtn.addEventListener("click", () => {
     window.location.href = "/Home/Logout";
   });
+
+  const callApiBtn = document.getElementById("callApiBtn");
+
+  callApiBtn.addEventListener("click", callApi);
 </script>
