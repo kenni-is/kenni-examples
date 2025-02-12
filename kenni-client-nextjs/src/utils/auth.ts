@@ -1,51 +1,14 @@
-import { NextAuthOptions } from "next-auth";
-import { TokenSetParameters } from "openid-client";
+import NextAuth, { NextAuthConfig, Session, User } from "next-auth";
+import { JWT } from "@auth/core/jwt";
 
 import { cookies } from "./cookies";
+import Kenni from "./provider";
 
-const issuer = process.env.KENNI_ISSUER;
-const scope = process.env.KENNI_SCOPE;
-const redirectUri = process.env.KENNI_REDIRECT_URI;
-const clientId = process.env.KENNI_CLIENT_ID;
-const clientSecret = process.env.KENNI_CLIENT_SECRET;
-const apiScope = process.env.KENNI_API_SCOPE;
-
-export const authOptions: NextAuthOptions = {
-  providers: [
-    {
-      id: "kenni",
-      name: "Kenni NextJs Example",
-      type: "oauth",
-      wellKnown: `${issuer}/.well-known/openid-configuration`,
-      authorization: {
-        params: {
-          scope: `${scope} ${apiScope}`,
-          redirect_uri: redirectUri,
-          ui_locale: "is", // Optional. Valid options, "is" or "en"
-        },
-      },
-      clientId,
-      clientSecret,
-      idToken: true,
-      checks: ["pkce", "state", "nonce"],
-      profile: (
-        profile: Record<string, string>,
-        tokens: TokenSetParameters
-      ) => {
-        return {
-          id: profile.sub,
-          sub: profile.sub,
-          name: profile.name,
-          accessToken: tokens.access_token ?? "",
-          idToken: tokens.id_token ?? "",
-          refreshToken: tokens.refresh_token ?? "",
-        };
-      },
-    },
-  ],
+export const { auth, handlers, signIn, signOut } = NextAuth({
+  providers: [Kenni],
   cookies,
   callbacks: {
-    session: ({ session, token }) => {
+    session: ({ session, token }: { session: Session; token?: JWT }) => {
       if (token) {
         const { sub, name, idToken } = token;
 
@@ -59,11 +22,11 @@ export const authOptions: NextAuthOptions = {
 
       return session;
     },
-    jwt: ({ user, token }) => {
+    jwt: ({ user, token }: { user?: User; token: JWT }) => {
       if (user) {
         token.id = user.id;
         token.sub = user.sub;
-        token.name = user.name;
+        token.name = user.name as string;
         token.idToken = user.idToken;
         token.accessToken = user.accessToken;
         token.refreshToken = user.refreshToken;
@@ -72,4 +35,5 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
   },
-};
+  session: { strategy: "jwt" },
+} satisfies NextAuthConfig);

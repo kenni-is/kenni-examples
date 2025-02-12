@@ -1,10 +1,10 @@
 import styles from "./page.module.css";
 import { PageContainer } from "@kenni-example/components/ui";
 
-import { getSession } from "./session";
+import { auth } from "@kenni-example/utils/auth";
 
 const Home = async () => {
-  const session = await getSession();
+  const session = await auth();
 
   return (
     <main className={styles.main}>
