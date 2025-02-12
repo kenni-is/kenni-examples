@@ -2,7 +2,7 @@ const secure = process.env.NODE_ENV === "production";
 
 const defaultCookieOptions = {
   httpOnly: true,
-  sameSite: "lax",
+  sameSite: "lax" as const,
   path: "/",
   secure,
 };

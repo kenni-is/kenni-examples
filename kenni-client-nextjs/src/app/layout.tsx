@@ -1,10 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-
-import { RootProvider } from "@kenni-example/components/providers";
-
-import { getSession } from "./session";
+import { SessionProvider } from "next-auth/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,12 +15,10 @@ const RootLayout = async ({
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
-  const session = await getSession();
-
   return (
     <html lang="en">
       <body className={inter.className}>
-        <RootProvider session={session}>{children}</RootProvider>
+        <SessionProvider>{children}</SessionProvider>
       </body>
     </html>
   );
