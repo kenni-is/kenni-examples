@@ -25,6 +25,7 @@
 
   <div class="actions">
     <button id="logoutBtn">Logout</button>
+    <button id="rpLogoutBtn">RP-initiated Logout</button>
     <button id="callApiBtn">Test access token</button>
   </div>
 
@@ -63,6 +64,12 @@
 
   logoutBtn.addEventListener("click", () => {
     window.location.href = "/Home/Logout";
+  });
+
+  const rpLogoutBtn = document.getElementById("rpLogoutBtn");
+
+  rpLogoutBtn.addEventListener("click", () => {
+    window.location.href = "/Home/RpLogout";
   });
 
   const callApiBtn = document.getElementById("callApiBtn");

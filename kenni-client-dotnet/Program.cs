@@ -22,6 +22,10 @@ builder.Services
     options.ClientSecret = builder.Configuration["Kenni:ClientSecret"];
     options.ResponseType = "code";
 
+    // Only relevant if your team has SSO enabled
+    // Use a valid, registered redirect URI
+    options.SignedOutCallbackPath = "/Home";
+
     options.Scope.Add("openid");
     options.Scope.Add("profile");
     options.Scope.Add("national_id");
@@ -39,7 +43,6 @@ builder.Services
     options.Authority = builder.Configuration["Kenni:Authority"];
     options.TokenValidationParameters = new TokenValidationParameters
     {
-
       ValidIssuer = builder.Configuration["Kenni:Authority"],
       ValidAudience = $"{builder.Configuration["Kenni:ClientId"]}-api",
       ValidateIssuer = true,
