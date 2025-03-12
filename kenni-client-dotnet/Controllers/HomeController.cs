@@ -34,7 +34,18 @@ public class HomeController : Controller
   [Authorize(AuthenticationSchemes = "oidc")]
   public async Task<IActionResult> Logout()
   {
+    // Only sign out locally from ASP.NET Core authentication scheme
     await HttpContext.SignOutAsync();
     return Redirect("/");
+  }
+
+  [Authorize(AuthenticationSchemes = "oidc")]
+  public async Task<IActionResult> RpLogout()
+  {
+    // End the local session
+    await HttpContext.SignOutAsync();
+
+    // Sign out from Kenni
+    return SignOut("oidc");
   }
 }
