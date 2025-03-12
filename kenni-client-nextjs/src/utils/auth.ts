@@ -21,7 +21,9 @@ export const authOptions: NextAuthOptions = {
         params: {
           scope: `${scope} ${apiScope}`,
           redirect_uri: redirectUri,
-          ui_locale: "is", // Optional. Valid options, "is" or "en"
+          // Space delimited list of locales, with the preferred locale first
+          // Kenni will use the first valid locale from the list, which is either "is" or "en"
+          ui_locales: "is",
         },
       },
       clientId,
