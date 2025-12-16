@@ -7,6 +7,7 @@ import {
   FetchButton,
   SignInButton,
   SignOutButton,
+  SwitchDelegationButton,
 } from "@kenni-example/components";
 
 import styles from "./PageContainer.module.css";
@@ -34,6 +35,7 @@ export const PageContainer = ({ signedIn }: PageContainerProps) => {
         {signedIn && (
           <>
             <FetchButton onFetched={(data) => setData(data)} />
+            <SwitchDelegationButton />
             <SignOutButton />
             <button
               onClick={async () => {
