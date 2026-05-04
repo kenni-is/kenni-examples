@@ -6,3 +6,6 @@ __pycache__/
 # Environments
 .env
 .venv
+
+.claude
+.idea

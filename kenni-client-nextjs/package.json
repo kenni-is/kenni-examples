@@ -1,6 +1,6 @@
 {
   "name": "kenni-client-nextjs",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -9,20 +9,19 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "jose": "^5.2.3",
-    "next": "14.1.4",
-    "next-auth": "^4.24.7",
-    "openid-client": "^5.6.5",
-    "react": "^18",
-    "react-dom": "^18"
+    "better-auth": "^1.6.9",
+    "jose": "^6.2.3",
+    "next": "16.2.4",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5"
   },
   "devDependencies": {
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "eslint": "^8",
-    "eslint-config-next": "14.1.4",
-    "typescript": "^5"
+    "@types/node": "^22.10.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "eslint": "^9.0.0",
+    "eslint-config-next": "16.2.4",
+    "typescript": "^5.9.3"
   },
   "packageManager": "yarn@1.22.22"
 }

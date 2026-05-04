@@ -3,23 +3,25 @@
 import { useState } from "react";
 
 type FetchButtonProps = {
-  title?: string;
-  url?: string;
+  title: string;
+  url: string;
+  method?: "GET" | "POST";
   onFetched(data: Record<string, unknown>): void;
 };
 
 export const FetchButton = ({
-  title = "Access protected resource",
-  url = "/api/protected",
+  title,
+  url,
+  method = "GET",
   onFetched,
 }: FetchButtonProps) => {
   const [loading, setLoading] = useState(false);
 
   const getData = async () => {
     setLoading(true);
-
     try {
       const response = await fetch(url, {
+        method,
         credentials: "include",
       });
       const data = await response.json();
@@ -32,14 +34,8 @@ export const FetchButton = ({
   };
 
   return (
-    <div>
-      <button
-        onClick={getData}
-        disabled={loading}
-        style={{ minWidth: "200px" }}
-      >
-        {loading ? "loading..." : title}
-      </button>
-    </div>
+    <button onClick={getData} disabled={loading} style={{ minWidth: "200px" }}>
+      {loading ? "loading..." : title}
+    </button>
   );
 };

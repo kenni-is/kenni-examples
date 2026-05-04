@@ -1,14 +1,27 @@
-.loggedInContainer {
+.buttonStack {
   display: flex;
-  gap: 20px;
+  flex-direction: column;
+  gap: 12px;
+  align-items: stretch;
+  width: 260px;
 }
 
-.response {
-  margin-top: 20px;
-  max-width: 500px;
+.buttonStack button {
+  width: 100%;
 }
 
-.details { 
+.linkButton {
+  display: block;
+}
+
+.details {
+  margin-top: 24px;
+  max-width: 600px;
+  padding: 16px;
+  border-radius: 8px;
+  background: rgba(127, 127, 127, 0.12);
+  font-family: var(--font-mono);
+  font-size: 13px;
   white-space: pre-wrap;
   word-wrap: break-word;
 }

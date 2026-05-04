@@ -1,10 +1,31 @@
 "use client";
 
-import { signIn } from "next-auth/react";
+import { authClient } from "@kenni-example/lib/auth-client";
 
 export const SignInButton = () => {
-  return <>
-    <button onClick={() => signIn("kenni")}>Sign in</button>
-    <button onClick={() => signIn("kenni", undefined, {prompt: 'delegation'})}>Sign in with delegation</button>
-  </>;
+  return (
+    <>
+      <button
+        onClick={() =>
+          authClient.signIn.oauth2({
+            providerId: "kenni",
+            callbackURL: "/",
+          })
+        }
+      >
+        Continue with Kenni
+      </button>
+      <button
+        onClick={() =>
+          authClient.signIn.oauth2({
+            providerId: "kenni",
+            callbackURL: "/",
+            additionalData: { prompt: "delegation" },
+          })
+        }
+      >
+        Continue with Delegation
+      </button>
+    </>
+  );
 };
