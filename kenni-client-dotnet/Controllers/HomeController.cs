@@ -1,51 +1,25 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace KenniSampleApp.Controllers;
 
 public class HomeController : Controller
 {
-  private readonly ILogger<HomeController> _logger;
+    private readonly KenniOptions _kenni;
 
-  public HomeController(ILogger<HomeController> logger)
-  {
-    _logger = logger;
-  }
+    public HomeController(IOptions<KenniOptions> kenni)
+    {
+        _kenni = kenni.Value;
+    }
 
-  public IActionResult Index()
-  {
-    return View();
-  }
-
-  [Authorize(AuthenticationSchemes = "oidc")]
-  public async Task<IActionResult> LoggedIn()
-  {
-    ViewData["NationalID"] = User.FindFirstValue("national_id");
-    ViewData["Name"] = User.FindFirstValue("name");
-
-    var token = await HttpContext.GetTokenAsync("oidc", "access_token");
-    ViewData["AccessToken"] = token;
-
-    return View();
-  }
-
-  [Authorize(AuthenticationSchemes = "oidc")]
-  public async Task<IActionResult> Logout()
-  {
-    // Only sign out locally from ASP.NET Core authentication scheme
-    await HttpContext.SignOutAsync();
-    return Redirect("/");
-  }
-
-  [Authorize(AuthenticationSchemes = "oidc")]
-  public async Task<IActionResult> RpLogout()
-  {
-    // End the local session
-    await HttpContext.SignOutAsync();
-
-    // Sign out from Kenni
-    return SignOut("oidc");
-  }
+    public IActionResult Index()
+    {
+        ViewData["SignedIn"] = User.Identity?.IsAuthenticated ?? false;
+        ViewData["Name"] = User.FindFirstValue("name") ?? User.FindFirstValue("sub");
+        ViewData["NationalId"] = User.FindFirstValue("national_id");
+        ViewData["ApiEnabled"] = _kenni.ApiEnabled;
+        ViewData["M2MEnabled"] = _kenni.M2MEnabled;
+        return View();
+    }
 }

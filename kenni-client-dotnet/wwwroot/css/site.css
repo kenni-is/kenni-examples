@@ -1,0 +1,44 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    margin: 0;
+    padding: 32px;
+    background: #fafafa;
+    color: #111;
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    align-items: flex-start;
+}
+
+.button-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 260px;
+}
+
+.button-stack button {
+    width: 100%;
+    padding: 8px 12px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.button-stack form {
+    margin: 0;
+}
+
+.details {
+    margin-top: 8px;
+    max-width: 600px;
+    padding: 16px;
+    border-radius: 8px;
+    background: rgba(127, 127, 127, 0.12);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 13px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}

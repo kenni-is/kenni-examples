@@ -1,7 +1,73 @@
-﻿<h1>Kenni OIDC Request Example</h1>
-<button id="loginBtn">Login</button>
-<script>
-    document.getElementById("loginBtn").addEventListener("click", () => {
-    window.location.href = "/Home/LoggedIn";
-    });
-</script>
+@{
+    var signedIn = (bool)(ViewData["SignedIn"] ?? false);
+    var name = ViewData["Name"] as string;
+    var apiEnabled = (bool)(ViewData["ApiEnabled"] ?? false);
+    var m2mEnabled = (bool)(ViewData["M2MEnabled"] ?? false);
+}
+
+<h1>
+    @if (signedIn)
+    {
+        @($"Welcome {name}")
+    }
+    else
+    {
+        @("Kenni — ASP.NET Core example")
+    }
+</h1>
+
+<div class="button-stack">
+    @if (!signedIn)
+    {
+        <form method="get" action="/auth/login">
+            <button type="submit">Continue with Kenni</button>
+        </form>
+    }
+
+    @if (signedIn && apiEnabled)
+    {
+        <button type="button" data-fetch-url="/api/me">Call protected resource</button>
+    }
+
+    @if (m2mEnabled)
+    {
+        <button type="button" data-fetch-url="/api/client-credentials" data-fetch-method="POST">
+            Client credentials grant
+        </button>
+    }
+
+    @if (signedIn)
+    {
+        <form method="post" action="/auth/logout">
+            @Html.AntiForgeryToken()
+            <button type="submit">Sign out (local)</button>
+        </form>
+        <form method="post" action="/auth/rp-logout">
+            @Html.AntiForgeryToken()
+            <button type="submit">RP-initiated logout</button>
+        </form>
+    }
+</div>
+
+<pre class="details" id="output" hidden></pre>
+
+@section Scripts {
+    <script>
+        const output = document.getElementById("output");
+        document.querySelectorAll("[data-fetch-url]").forEach((button) => {
+            button.addEventListener("click", async () => {
+                const url = button.dataset.fetchUrl;
+                const method = button.dataset.fetchMethod ?? "GET";
+                let body;
+                try {
+                    const response = await fetch(url, { method });
+                    body = await response.json();
+                } catch (error) {
+                    body = { error: String(error) };
+                }
+                output.hidden = false;
+                output.textContent = JSON.stringify(body, null, 2);
+            });
+        });
+    </script>
+}
