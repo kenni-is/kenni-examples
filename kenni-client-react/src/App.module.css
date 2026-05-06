@@ -1,0 +1,20 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 20px;
+  align-items: center;
+  padding: 6rem;
+  min-height: 100vh;
+}
+
+.error {
+  max-width: 600px;
+  padding: 16px;
+  border-radius: 8px;
+  background: rgba(220, 38, 38, 0.12);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
