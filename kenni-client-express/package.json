@@ -1,0 +1,25 @@
+{
+  "name": "kenni-client-express",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Kenni — Node.js / Express example using openid-client.",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "start": "tsx src/index.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "jose": "^6.2.3",
+    "openid-client": "^6.8.4"
+  },
+  "devDependencies": {
+    "@types/express-session": "^1.19.0",
+    "@types/node": "^22.10.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.0"
+  }
+}
