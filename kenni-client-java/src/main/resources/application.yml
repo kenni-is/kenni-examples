@@ -1,0 +1,43 @@
+spring:
+  # Optional: pick up a gitignored application-local.yml from the project root
+  # for local dev. Copy `application-local.yml.example` to
+  # `application-local.yml`, edit values, and `./gradlew bootRun` — no profile
+  # flag required. `optional:` means startup doesn't fail when the file is
+  # absent (e.g. in CI / production where env vars are used instead).
+  config:
+    import: "optional:file:application-local.yml"
+
+server:
+  port: 8080
+  # Default Tomcat header size is 8KB. OAuth2 flows accumulate cookies
+  # (session + CSRF + nonce/state for in-flight authorizations); 8KB
+  # overflows easily after a couple of failed sign-in attempts. 16KB is
+  # the customary OAuth2-app baseline.
+  max-http-request-header-size: 16KB
+
+# Kenni-specific config. Override via env vars (the names below) or in a
+# gitignored application-local.yml — see README for details.
+app:
+  kenni:
+    # Required. Empty defaults so unresolved placeholders surface as a clear
+    # error from KenniClientRegistrationConfig, not as `${KENNI_ISSUER}` leaking
+    # into a URI builder.
+    issuer: ${KENNI_ISSUER:}
+    client-id: ${KENNI_CLIENT_ID:}
+    client-secret: ${KENNI_CLIENT_SECRET:}
+
+    # Optional.
+    api-scope: ${KENNI_API_SCOPE:}
+    api-audience: ${KENNI_API_AUDIENCE:}
+    m2m-client-id: ${KENNI_M2M_CLIENT_ID:}
+    m2m-client-secret: ${KENNI_M2M_CLIENT_SECRET:}
+    m2m-scope: ${KENNI_M2M_SCOPE:}
+
+# Note: the OAuth2 client registration is built programmatically in
+# KenniClientRegistrationConfig — Spring's `application.yml` doesn't support
+# conditional list entries, and we want to add KENNI_API_SCOPE to the requested
+# scopes only when it's set. So we skip `spring.security.oauth2.client.*` here.
+
+logging:
+  level:
+    org.springframework.security: INFO

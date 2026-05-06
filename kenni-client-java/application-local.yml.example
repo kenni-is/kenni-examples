@@ -1,0 +1,24 @@
+# Copy this file to `application-local.yml` and fill in real values.
+# `application-local.yml` is gitignored. The base `application.yml` imports
+# it via `spring.config.import: optional:file:application-local.yml`, so no
+# profile flag is needed — `./gradlew bootRun` just picks it up.
+
+app:
+  kenni:
+    # Required.
+    issuer: https://idp.kenni.is/<team-domain>          # No trailing slash.
+    client-id: '@<team-domain>/<app-id>'
+    client-secret: <from-portal>
+
+    # Optional: enables the "Call protected resource" button. Setting api-scope
+    # also adds it to the sign-in scopes so issued access tokens carry it.
+    # api-audience defaults to <client-id>-api — set explicitly only if your
+    # API tokens use a different aud claim.
+    api-scope: ''
+    api-audience: ''
+
+    # Optional: enables the "Client credentials grant" button. Register a
+    # *separate* M2M client in the Kenni developer portal for these.
+    m2m-client-id: ''
+    m2m-client-secret: ''
+    m2m-scope: ''
