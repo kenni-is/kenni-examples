@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Kenni curl example — sign-in callback</title>
+<style>
+  body { font: 14px/1.5 -apple-system, system-ui, sans-serif; max-width: 720px; margin: 60px auto; padding: 0 20px; color: #1a1a1a; }
+  h1 { font-size: 22px; }
+  pre { background: #f4f4f4; padding: 12px; border-radius: 6px; overflow-x: auto; user-select: all; word-break: break-all; }
+  .err { color: #b00; }
+  .ok  { color: #060; }
+  button { font: inherit; padding: 6px 12px; cursor: pointer; }
+</style>
+</head>
+<body>
+<h1>Kenni sign-in callback</h1>
+<p id="status">Reading parameters…</p>
+<p>Run this in your terminal to exchange the code for tokens:</p>
+<pre id="cmd">./03-exchange.sh '&lt;loading&gt;'</pre>
+<button id="copy" type="button">Copy command</button>
+<details style="margin-top: 30px;">
+  <summary>Full callback URL</summary>
+  <pre id="full-url"></pre>
+</details>
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const status = document.getElementById('status');
+  const fullUrl = document.getElementById('full-url');
+  const cmd = document.getElementById('cmd');
+  const fullStr = window.location.href;
+  fullUrl.textContent = fullStr;
+  if (params.get('error')) {
+    status.textContent = 'Kenni returned an error: ' + params.get('error') +
+      (params.get('error_description') ? ' — ' + params.get('error_description') : '');
+    status.className = 'err';
+  } else if (params.get('code')) {
+    status.textContent = 'Got authorization code. Paste the command below into your terminal.';
+    status.className = 'ok';
+  } else {
+    status.textContent = 'No code or error on this URL.';
+  }
+  const cmdStr = "./03-exchange.sh '" + fullStr.replace(/'/g, "'\\''") + "'";
+  cmd.textContent = cmdStr;
+  document.getElementById('copy').addEventListener('click', () => {
+    navigator.clipboard.writeText(cmdStr);
+  });
+</script>
+</body>
+</html>

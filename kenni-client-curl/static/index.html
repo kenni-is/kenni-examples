@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Kenni curl example</title>
+<style>
+  body { font: 14px/1.5 -apple-system, system-ui, sans-serif; max-width: 720px; margin: 60px auto; padding: 0 20px; color: #1a1a1a; }
+  h1 { font-size: 22px; }
+  code { background: #f4f4f4; padding: 1px 4px; border-radius: 3px; }
+  ol li { margin: 6px 0; }
+</style>
+</head>
+<body>
+<h1>Kenni curl example</h1>
+<p>This page is served by <code>./serve.sh</code> on <code>http://localhost:8000</code>. Its only role is to host the redirect-URI landing page at <code>/callback</code> so the browser has somewhere to land after sign-in (and after RP-initiated sign-out).</p>
+<p>The flow itself runs in your terminal:</p>
+<ol>
+  <li><code>./01-discover.sh</code> — fetch the OIDC discovery doc and JWKS.</li>
+  <li><code>./02-login.sh</code> — generate PKCE / state / nonce, open Kenni in the browser.</li>
+  <li>Sign in. The browser will redirect here, to <code>/callback</code>.</li>
+  <li>Copy the command shown there and run <code>./03-exchange.sh '&lt;url&gt;'</code> in your terminal.</li>
+  <li><code>./04-userinfo.sh</code>, <code>./05-protected-resource.sh</code>, <code>./06-client-credentials.sh</code>, <code>./07-refresh.sh</code> — exercise each feature.</li>
+  <li><code>./08-logout.sh</code> — RP-initiated logout (redirects you back here).</li>
+</ol>
+<p>If you've just been logged out, that worked.</p>
+</body>
+</html>
