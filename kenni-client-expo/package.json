@@ -1,26 +1,28 @@
 {
   "name": "kenni-client-expo",
   "version": "1.0.0",
+  "private": true,
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web"
+    "android": "expo run:android",
+    "ios": "expo run:ios",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "expo": "~50.0.14",
-    "expo-auth-session": "~5.4.0",
-    "expo-crypto": "~12.8.1",
-    "expo-secure-store": "~12.8.1",
-    "expo-status-bar": "~1.11.1",
-    "react": "18.2.0",
-    "react-native": "0.73.6"
+    "expo": "~55.0.23",
+    "expo-auth-session": "~55.0.15",
+    "expo-constants": "~55.0.16",
+    "expo-crypto": "~55.0.14",
+    "expo-secure-store": "~55.0.13",
+    "expo-status-bar": "~55.0.6",
+    "expo-web-browser": "~55.0.15",
+    "react": "19.2.0",
+    "react-native": "0.83.6"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.0",
-    "@types/react": "~18.2.45",
-    "typescript": "^5.1.3"
-  },
-  "private": true
+    "@babel/core": "^7.26.0",
+    "@types/react": "~19.2.0",
+    "typescript": "~5.9.3"
+  }
 }
