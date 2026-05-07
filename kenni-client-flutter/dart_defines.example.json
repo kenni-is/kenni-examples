@@ -1,0 +1,8 @@
+{
+  "_comment": "Copy this file to dart_defines.json and fill in your values. Pass it to flutter run / flutter build via --dart-define-from-file=dart_defines.json. The values surface in Dart code through const String.fromEnvironment('KENNI_*'). All four keys are required.",
+
+  "KENNI_ISSUER": "https://idp.kenni.is/<team-domain>",
+  "KENNI_CLIENT_ID": "@<team-domain>/<native-app-id>",
+  "KENNI_REDIRECT_URI": "is.kenni.flutter://callback",
+  "KENNI_POST_LOGOUT_REDIRECT_URI": "is.kenni.flutter://post-logout"
+}
